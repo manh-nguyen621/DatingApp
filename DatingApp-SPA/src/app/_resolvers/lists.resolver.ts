@@ -7,13 +7,15 @@ import { Observable,of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class MemberListResolver implements Resolve<User[]> {
+export class ListsResolver implements Resolve<User[]> {
     pageNumber = 1;
     pageSize = 5;
+    likeParam = 'Likers';
+
     constructor(private userService: UserService, private route: Router, private alertify: AlertifyService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
-        return this.userService.getUsers(this.pageNumber, this.pageSize).pipe(
+        return this.userService.getUsers(this.pageNumber, this.pageSize, null, this.likeParam).pipe(
             catchError(error => {
                 this.alertify.error('problem retrive data');
                 this.route.navigate(['/home']);
